@@ -17,11 +17,9 @@ const puppeteer = require('puppeteer');
     waitUntil: 'networkidle2',
   });
 
-  setTimeout(() => {
-    // 点击字幕按钮
-    // page.click('.ytp-subtitles-button');
-    page.click('#guide-service');
-  }, 10000);
+  // 等待字幕按钮可点击
+  await page.waitForSelector('.ytp-subtitles-button', { visible: true });
+  await page.click('.ytp-subtitles-button');
 
   // 等待一段时间以确保所有请求都被捕获
   // await page.waitForTimeout(10000);
