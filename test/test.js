@@ -18,7 +18,7 @@ const puppeteer = require('puppeteer');
   });
 
   // 移动鼠标到视频播放器区域，使字幕按钮出现
-  const videoPlayerSelector = '.html5-video-player';
+  const videoPlayerSelector = '#player-container';
   const videoPlayer = await page.waitForSelector(videoPlayerSelector, { visible: true });
   const videoPlayerBox = await videoPlayer.boundingBox();
   await page.mouse.move(
