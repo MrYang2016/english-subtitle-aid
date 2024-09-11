@@ -22,5 +22,5 @@ const puppeteer = require('puppeteer');
   // await page.waitForTimeout(10000);
   setTimeout(async () => {
     await browser.close();
-  }, 10000);
+  }, 20000);
 })();
