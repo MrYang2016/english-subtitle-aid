@@ -10,7 +10,6 @@ const puppeteer = require('puppeteer');
     if (url.includes('timedtext')) {
       console.log('字幕请求接口:', url);
     }
-    console.log('字幕请求接口:', url);
   });
 
   // 加载YouTube视频页面
@@ -22,5 +21,5 @@ const puppeteer = require('puppeteer');
   // await page.waitForTimeout(10000);
   setTimeout(async () => {
     await browser.close();
-  }, 20000);
+  }, 200000);
 })();
