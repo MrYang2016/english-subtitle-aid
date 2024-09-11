@@ -18,7 +18,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "dev": "cross-env NODE_ENV=local npm run start:dev -- -b swc"
+    "dev": "cross-env NODE_ENV=local npm run start:dev -- -b swc",
+    "buildDocker": "docker build . -t yangxigui/test",
+    "runDocker": "docker run -it --rm --net=host yangxigui/test",
+    "debugDocker": "npm run buildDocker && npm run runDocker"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
