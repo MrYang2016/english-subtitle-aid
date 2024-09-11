@@ -20,7 +20,7 @@ const puppeteer = require('puppeteer');
   setTimeout(() => {
     // 点击字幕按钮
     page.click('.ytp-subtitles-button');
-  }, 5000);
+  }, 10000);
 
   // 等待一段时间以确保所有请求都被捕获
   // await page.waitForTimeout(10000);
