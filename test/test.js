@@ -19,7 +19,8 @@ const puppeteer = require('puppeteer');
 
   setTimeout(() => {
     // 点击字幕按钮
-    page.click('.ytp-subtitles-button');
+    // page.click('.ytp-subtitles-button');
+    page.click('#guide-service');
   }, 10000);
 
   // 等待一段时间以确保所有请求都被捕获
