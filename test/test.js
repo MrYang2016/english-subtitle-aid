@@ -18,7 +18,8 @@ const puppeteer = require('puppeteer');
   });
 
   // 等待一段时间以确保所有请求都被捕获
-  await page.waitForTimeout(10000);
-
-  await browser.close();
+  // await page.waitForTimeout(10000);
+  setTimeout(async () => {
+    await browser.close();
+  }, 10000);
 })();
