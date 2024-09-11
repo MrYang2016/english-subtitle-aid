@@ -10,6 +10,7 @@ const puppeteer = require('puppeteer');
     if (url.includes('timedtext')) {
       console.log('字幕请求接口:', url);
     }
+    console.log('字幕请求接口:', url);
   });
 
   // 加载YouTube视频页面
