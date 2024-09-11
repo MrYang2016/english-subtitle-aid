@@ -17,6 +17,15 @@ const puppeteer = require('puppeteer');
     waitUntil: 'networkidle2',
   });
 
+  // 移动鼠标到视频播放器区域，使字幕按钮出现
+  const videoPlayerSelector = '.html5-video-player';
+  const videoPlayer = await page.waitForSelector(videoPlayerSelector, { visible: true });
+  const videoPlayerBox = await videoPlayer.boundingBox();
+  await page.mouse.move(
+    videoPlayerBox.x + videoPlayerBox.width / 2,
+    videoPlayerBox.y + videoPlayerBox.height / 2
+  );
+
   // 等待字幕按钮可点击
   await page.waitForSelector('.ytp-subtitles-button', { visible: true });
   await page.click('.ytp-subtitles-button');
