@@ -17,8 +17,10 @@ const puppeteer = require('puppeteer');
     waitUntil: 'networkidle2',
   });
 
+  await delay(10000);
+
   // 移动鼠标到视频播放器区域，使字幕按钮出现
-  const videoPlayerSelector = '.html5-main-video';
+  const videoPlayerSelector = '.html5-video-player';
   const videoPlayer = await page.waitForSelector(videoPlayerSelector, { visible: true });
   const videoPlayerBox = await videoPlayer.boundingBox();
   await page.mouse.move(
@@ -36,3 +38,7 @@ const puppeteer = require('puppeteer');
     await browser.close();
   }, 200000);
 })();
+
+export function delay(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
