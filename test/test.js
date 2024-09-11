@@ -39,6 +39,6 @@ const puppeteer = require('puppeteer');
   }, 200000);
 })();
 
-export function delay(time) {
+function delay(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
