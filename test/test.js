@@ -17,6 +17,11 @@ const puppeteer = require('puppeteer');
     waitUntil: 'networkidle2',
   });
 
+  setTimeout(() => {
+    // 点击字幕按钮
+    page.click('.ytp-subtitles-button.ytp-button');
+  }, 5000);
+
   // 等待一段时间以确保所有请求都被捕获
   // await page.waitForTimeout(10000);
   setTimeout(async () => {
