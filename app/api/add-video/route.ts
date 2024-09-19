@@ -39,10 +39,16 @@ async function getSubtitleFromYoutube(videoId: string) {
   const url = `https://www.youtube.com/watch?v=${videoId}`;
   const proxy = 'http://127.0.0.1:1087'; // Shadowsocks 代理地址
 
+
+  const args = [
+    '--no-sandbox', '--disable-setuid-sandbox',
+  ];
+  if (process.env.CUSTOM_ENV === 'local') {
+    args.push(`--proxy-server=${proxy}`);
+  }
   const browser = await puppeteer.launch({
-    headless: true, args: [
-      '--no-sandbox', '--disable-setuid-sandbox', `--proxy-server=${proxy}`
-    ]
+    headless: true, 
+    args,
   });
   const page = await browser.newPage();
 
