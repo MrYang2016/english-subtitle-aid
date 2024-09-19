@@ -5,7 +5,7 @@
   "scripts": {
     "build": "next build",
     "start": "next start",
-    "env": "cross-env CUSTOM_ENV=local next start",
+    "dev": "cross-env CUSTOM_ENV=local next start",
     "lint": "next lint",
     "pm2-dev": "git pull && npm run build && cross-env CUSTOM_ENV=production pm2 start npm --name \"english-subtitle-aid\" -- start"
   },

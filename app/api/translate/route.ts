@@ -38,10 +38,10 @@ export async function GET(request: Request) {
 async function getTranslation(subtitle: string) {
   // 判断视频是否已经存在
   const connection = await getConnection();
-  const [translations] = await connection.query<RowDataPacket[]>('SELECT id,originalText,translation FROM translations where originalText=?', [subtitle]);
+  const [translations] = await connection.query<RowDataPacket[]>('SELECT id,originalText,translation FROM Translations where originalText=?', [subtitle]);
   if (translations.length > 0) {
     if (!parseJson(translations[0].translation)) {
-      await connection.query('DELETE FROM translations WHERE id=?', [translations[0].id]);
+      await connection.query('DELETE FROM Translations WHERE id=?', [translations[0].id]);
     } else {
       return translations[0].translation;
     }
@@ -63,6 +63,6 @@ async function getTranslation(subtitle: string) {
       },
     ],
   });
-  await connection.query('INSERT INTO translations (originalText, translation) VALUES (?, ?)', [subtitle, translation]);
+  await connection.query('INSERT INTO Translations (originalText, translation) VALUES (?, ?)', [subtitle, translation]);
   return translation;
 }

@@ -23,7 +23,7 @@ export async function GET(request: Request) {
   const { videoId } = value;
   // 判断视频是否已经存在
   const connection = await getConnection();
-  const [video] = await connection.query('SELECT * FROM videos WHERE id = ?', [videoId]);
+  const [video] = await connection.query('SELECT * FROM Videos WHERE id = ?', [videoId]);
   if (Array.isArray(video) && video.length > 0) {
     return NextResponse.json({ message: 'success', id: videoId });
   }

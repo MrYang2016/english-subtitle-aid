@@ -28,7 +28,7 @@ export async function GET(request: Request) {
   const { videoId } = value;
   // 判断视频是否已经存在
   const connection = await getConnection();
-  const sqlResult = await connection.query('SELECT id,text,startTime,duration FROM subtitles where videoId=?', [videoId]);
+  const sqlResult = await connection.query('SELECT id,text,startTime,duration FROM Subtitles where videoId=?', [videoId]);
   const rows: Subtitle[] = sqlResult[0] as Subtitle[]; 
   let obj = { text: '', startTime: 0, duration: 0, id: 0 };
   const subtitles = rows.reduce<Subtitle[]>((r, v) => {
