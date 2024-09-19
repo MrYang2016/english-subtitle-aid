@@ -136,7 +136,7 @@ async function getSubtitleFromYoutube(videoId: string) {
 
   // await delay(10000);
 
-  // await page.screenshot({ path: 'screenshot2.png' }); // 截图保存
+  await page.screenshot({ path: 'screenshot2.png' }); // 截图保存
 
   // 移动鼠标到视频播放器区域，使字幕按钮出现
   const videoPlayerSelector = '.html5-video-player';
