@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import queryString from 'query-string';
 import Joi from 'joi';
-import puppeteer from 'puppeteer';
+import puppeteer, { Page } from 'puppeteer';
 import { getConnection } from '@/app/lib/db';
-import { parseJson } from '@/app/lib/utils';
+import { delay, parseJson } from '@/app/lib/utils';
 
 interface Params {
   videoId: string;
@@ -54,6 +54,8 @@ async function getSubtitleFromYoutube(videoId: string) {
 
   // 设置User-Agent
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+
+  await loginYoutube(page);
 
   // 监听网络请求
   // page.on('request', request => {
@@ -136,7 +138,7 @@ async function getSubtitleFromYoutube(videoId: string) {
 
   // await delay(10000);
 
-  await page.screenshot({ path: 'screenshot2.png' }); // 截图保存
+  await page.screenshot({ path: './public/screenshot2.png' }); // 截图保存
 
   // 移动鼠标到视频播放器区域，使字幕按钮出现
   const videoPlayerSelector = '.html5-video-player';
@@ -155,4 +157,27 @@ async function getSubtitleFromYoutube(videoId: string) {
   // 等待字幕按钮可点击
   await page.waitForSelector('.ytp-subtitles-button', { visible: true });
   await page.click('.ytp-subtitles-button');
+}
+
+async function loginYoutube(page: Page) {
+  // 登录YouTube
+  await page.goto('https://accounts.google.com/signin/v2/identifier?service=youtube', {
+    waitUntil: 'networkidle2',
+  });
+
+  await page.screenshot({ path: './public/login.png' }); // 截图保存
+
+  // 输入邮箱
+  await page.type('input[type="email"]', process.env.GOOGLE_EMAIL || '');
+  await page.click('#identifierNext');
+  await delay(2000); // 等待页面加载
+
+  await page.screenshot({ path: './public/login2.png' }); // 截图保存
+
+  // 输入密码
+  await page.type('input[type="password"]', process.env.GOOGLE_PASSWORD || '');
+  await page.click('#passwordNext');
+  await delay(5000); // 等待页面加载
+
+  await page.screenshot({ path: './public/login3.png' }); // 截图保存
 }
