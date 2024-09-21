@@ -20,6 +20,7 @@ export async function getSubtitles(url: string) {
   const response = await axios.get(url, env === 'local' ? { httpsAgent: agent } : {});
   const data = response.data;
 
+  console.log(data);
   const regex = /"captionTracks":(\[.*?\])/;
   if (!data.includes('captionTracks')) throw new Error(`Could not find captions for url: ${url}`);
   const _regex$exec = regex.exec(data);
