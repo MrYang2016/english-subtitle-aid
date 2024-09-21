@@ -12,7 +12,7 @@ const _striptags2 = _interopRequireDefault(_striptags);
 // const url = 'https://www.youtube.com/watch?v=PXWFlea0l5w';
 // getSubtitles(url).then(console.log);
 
-const env = process.env.CUSTOM_ENV || process.env.NODE_ENV || "local";
+// const env = process.env.CUSTOM_ENV || process.env.NODE_ENV || "local";
 
 export async function getSubtitles(url: string) {
   const proxy = 'http://127.0.0.1:1087'; // Shadowsocks 代理地址
