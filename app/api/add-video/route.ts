@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import queryString from 'query-string';
 import Joi from 'joi';
-import puppeteer, { Page } from 'puppeteer';
+import puppeteer from 'puppeteer';
 import { getConnection } from '@/app/lib/db';
-import { delay, parseJson } from '@/app/lib/utils';
+import { getSubtitles } from '@/app/lib/subtitles';
 
 interface Params {
   videoId: string;
@@ -47,7 +47,7 @@ async function getSubtitleFromYoutube(videoId: string) {
     args.push(`--proxy-server=${proxy}`);
   }
   const browser = await puppeteer.launch({
-    headless: true, 
+    headless: true,
     args,
   });
   const page = await browser.newPage();
@@ -55,56 +55,7 @@ async function getSubtitleFromYoutube(videoId: string) {
   // 设置User-Agent
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
 
-  await loginYoutube(page);
-
-  // 监听网络请求
-  // page.on('request', request => {
-  //   const url = request.url();
-  //   if (url.includes('timedtext')) {
-  //     console.log('字幕请求接口:', url);
-  //   }
-  // });
-
-  page.on('response', async response => {
-    const url = response.url();
-    if (url.includes('timedtext')) {
-      const text = await response.text();
-      // await browser.close();
-      console.log('字幕:', typeof text);
-
-      // 保存每条字幕
-      const subtitles = parseJson(text)?.events || [];
-      if (!isSubtitle(subtitles)) {
-        console.error('字幕格式错误');
-        return;
-      }
-      const connection = await getConnection();
-      // 批量保存
-      const sql = 'INSERT INTO Subtitles (videoId, text, language, startTime, duration) VALUES ?';
-      const values = subtitles.map(subtitle => [videoId, subtitle.segs[0].utf8, 'en', subtitle.tStartMs, subtitle.dDurationMs]);
-      await connection.query(sql, [values]);
-
-    }
-  });
-
-  interface Subtitle {
-    tStartMs: number;
-    dDurationMs: number;
-    segs: {
-      utf8: string;
-    }[];
-  }
-
-  function isSubtitle(subtitles: unknown): subtitles is Subtitle[] {
-    return Array.isArray(subtitles) && subtitles.every(subtitle => 
-      typeof subtitle === 'object' && 
-      'tStartMs' in subtitle && 
-      'dDurationMs' in subtitle && 
-      'segs' in subtitle && 
-      Array.isArray(subtitle.segs) && 
-      subtitle.segs.every((seg: { utf8: string }) => typeof seg === 'object' && 'utf8' in seg && typeof seg.utf8 === 'string')
-    );
-  }
+  await saveSubtitles(videoId);
 
   // 加载YouTube视频页面
   await page.goto(url, {
@@ -159,28 +110,18 @@ async function getSubtitleFromYoutube(videoId: string) {
   await page.click('.ytp-subtitles-button');
 }
 
-async function loginYoutube(page: Page) {
-  // 登录YouTube
-  await page.goto('https://accounts.google.com/signin/v2/identifier?service=youtube', {
-    waitUntil: 'networkidle2',
-  });
-
-  // 设置User-Agent
-  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36');
-
-  await page.screenshot({ path: './public/login.png' }); // 截图保存
-
-  // 输入邮箱
-  await page.type('input[type="email"]', process.env.GOOGLE_EMAIL || '');
-  await page.click('#identifierNext');
-  await delay(2000); // 等待页面加载
-
-  await page.screenshot({ path: './public/login2.png' }); // 截图保存
-
-  // 输入密码
-  await page.type('input[type="password"]', process.env.GOOGLE_PASSWORD || '');
-  await page.click('#passwordNext');
-  await delay(5000); // 等待页面加载
-
-  await page.screenshot({ path: './public/login3.png' }); // 截图保存
+async function saveSubtitles(videoId: string) {
+  const url = `https://www.youtube.com/watch?v=${videoId}`;
+  const subtitles = await getSubtitles(url);
+  const connection = await getConnection();
+  try {
+    // 批量保存
+    const sql = 'INSERT INTO Subtitles (videoId, text, language, startTime, duration) VALUES ?';
+    const values = subtitles.map(subtitle => [videoId, subtitle.text, 'en', subtitle.start, subtitle.dur]);
+    await connection.query(sql, [values]);
+  } catch (error) {
+    console.error('保存字幕失败', error);
+  } finally {
+    connection.end();
+  }
 }
