@@ -18,7 +18,7 @@ export async function getSubtitles(url: string) {
   const proxy = 'http://127.0.0.1:1087'; // Shadowsocks 代理地址
   const agent = new HttpsProxyAgent(proxy);
   const headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'
   };
   const response = await axios.get(url, env === 'local' ? { httpsAgent: agent, headers } : { headers });
   const data = response.data;
