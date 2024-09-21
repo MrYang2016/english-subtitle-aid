@@ -17,15 +17,7 @@ const env = process.env.CUSTOM_ENV || process.env.NODE_ENV || "local";
 export async function getSubtitles(url: string) {
   const proxy = 'http://127.0.0.1:1087'; // Shadowsocks 代理地址
   const agent = new HttpsProxyAgent(proxy);
-  const headers = {
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:85.0) Gecko/20100101 Firefox/85.0', // 模拟浏览器
-    'Accept-Language': 'en-US,en;q=0.5',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-    'Connection': 'keep-alive',
-  }
-  const response = await axios.get(url, env === 'local' ? { httpsAgent: agent, headers } : {
-    headers
-  });
+  const response = await axios.get(url, { httpsAgent: agent });
   const data = response.data;
 
   const regex = /"captionTracks":(\[.*?\])/;
