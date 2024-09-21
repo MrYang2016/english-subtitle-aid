@@ -3,7 +3,9 @@ import queryString from 'query-string';
 import Joi from 'joi';
 import puppeteer from 'puppeteer';
 import { getConnection } from '@/app/lib/db';
-import { getSubtitles } from '@/app/lib/subtitles';
+// import { getSubtitles } from '@/app/lib/subtitles';
+
+import { getSubtitles } from 'youtube-captions-scraper';
 
 interface Params {
   videoId: string;
@@ -111,8 +113,12 @@ async function getSubtitleFromYoutube(videoId: string) {
 }
 
 async function saveSubtitles(videoId: string) {
-  const url = `https://www.youtube.com/watch?v=${videoId}`;
-  const subtitles = await getSubtitles(url);
+  // const url = `https://www.youtube.com/watch?v=${videoId}`;
+  const subtitles = await getSubtitles({
+    videoID: videoId, // youtube video id
+    lang: 'en' // default: `en`
+  });
+  console.log({ subtitles });
   const connection = await getConnection();
   try {
     // 批量保存
