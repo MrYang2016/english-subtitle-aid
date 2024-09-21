@@ -12,12 +12,15 @@ const _striptags2 = _interopRequireDefault(_striptags);
 // const url = 'https://www.youtube.com/watch?v=PXWFlea0l5w';
 // getSubtitles(url).then(console.log);
 
-// const env = process.env.CUSTOM_ENV || process.env.NODE_ENV || "local";
+const env = process.env.CUSTOM_ENV || process.env.NODE_ENV || "local";
 
 export async function getSubtitles(url: string) {
   const proxy = 'http://127.0.0.1:1087'; // Shadowsocks 代理地址
   const agent = new HttpsProxyAgent(proxy);
-  const response = await axios.get(url, { httpsAgent: agent });
+  const headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+  };
+  const response = await axios.get(url, env === 'local' ? { httpsAgent: agent, headers } : { headers });
   const data = response.data;
 
   const regex = /"captionTracks":(\[.*?\])/;
