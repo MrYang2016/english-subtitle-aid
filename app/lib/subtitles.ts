@@ -1,11 +1,11 @@
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import axios from 'axios';
 
-const _he = require('he');
+import _he from 'he';
 
 const _he2 = _interopRequireDefault(_he);
 
-const _striptags = require('striptags');
+import _striptags from 'striptags';
 
 const _striptags2 = _interopRequireDefault(_striptags);
 
@@ -73,23 +73,23 @@ function _slicedToArray(arr, i) {
 }
 
 function sliceIterator(arr, i) {
-  let _arr = [];
+  const _arr = [];
   let _n = true;
   let _d = false;
   let _e = undefined;
+  const _i = arr[Symbol.iterator]();
   try {
-    for (let _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-      // @ts-ignore
+    for (let _s; !(_n = (_s = _i.next()).done); _n = true) {
+      // @ts-expect-error 类型错误
       _arr.push(_s.value);
       if (i && _arr.length === i) break;
     }
   } catch (err) {
     _d = true;
-    // @ts-ignore
+    // @ts-expect-error 类型错误
     _e = err;
   } finally {
     try {
-      // @ts-ignore
       if (!_n && _i["return"]) _i["return"]();
     } finally {
       if (_d) throw _e;
