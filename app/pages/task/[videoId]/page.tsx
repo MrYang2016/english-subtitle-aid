@@ -287,7 +287,7 @@ export default function Page({ params }: { params: { videoId: string } }) {
                   </IconButton>
                 )}
                 {/* 在最右边加个收藏图标，点击后可以收藏字幕 */}
-                <IconButton
+                {/* <IconButton
                   onClick={() => {
                     // 收藏字幕
                   }}
@@ -297,7 +297,7 @@ export default function Page({ params }: { params: { videoId: string } }) {
                   }}
                 >
                   <FavoriteIcon />
-                </IconButton>
+                </IconButton> */}
               </Typography>
               {/* 原文 */}
               <Typography variant="body1" component="h2" gutterBottom style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#333', marginBottom: '16px' }}>

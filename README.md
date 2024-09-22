@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 应用介绍
 
-## Getting Started
+## 概述
 
-First, run the development server:
+欢迎使用我们创新的应用程序，它旨在通过YouTube视频提升您的英语学习体验。该应用允许用户输入YouTube网址，获取视频字幕，并将其用作学习英语的强大工具。
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 主要功能
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. **字幕提取**：只需输入YouTube视频网址，我们的应用程序会自动为您获取字幕。
+2. **语法和词汇学习**：每个字幕句子都会被分解，帮助您理解其语法结构和关键词汇。这个功能非常适合想要提高英语句子构造理解的学习者。
+3. **例句**：通过为每个关键词提供的例句，学习如何在不同的上下文中使用新词汇。
+4. **发音练习**：录制您的声音并与原视频进行比较。这个功能通过提供即时反馈，帮助您练习和提高发音。
+5. **互动学习**：通过练习口语和听力，积极参与内容，这是掌握新语言的关键。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 目标用户
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+该应用适合以下用户：
 
-## Learn More
+- **英语学习者**：无论您是初学者还是高级学习者，这个工具都能帮助您以有趣和互动的方式提高英语技能。
+- **教师和教育工作者**：将此应用作为辅助工具，增强您的教学方法，并为学生提供额外的练习。
+- **语言爱好者**：任何对通过真实世界内容学习英语感兴趣的人都会发现这个应用非常有用。
 
-To learn more about Next.js, take a look at the following resources:
+## 使用方法
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **输入YouTube网址**：首先输入您想要学习的YouTube视频的网址。
+2. **获取字幕**：应用程序会自动从视频中获取字幕。
+3. **学习和练习**：使用字幕学习语法、词汇和发音。录制您的声音并与原视频进行比较，以提高您的口语技能。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 待办事项
 
-## Deploy on Vercel
+- **收藏句子**：在学习过程中，用户可以收藏感兴趣的句子，方便日后复习和学习。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 环境配置
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+在启动项目之前，请确保在项目根目录下创建一个`.env`文件，并添加以下参数：
+#### 通义千问模型key（选填）
+TONGYI_API_KEY=
+#### MySQL密码（选填）
+MYSQL_PASSWORD=
+#### DeepSeek API key（选填）
+DEEPSEEK_API_KEY=

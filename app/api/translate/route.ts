@@ -25,15 +25,7 @@ export async function GET(request: Request) {
   }
   const { subtitle } = value;
   console.log({ subtitle });
-  const translation = await getTranslation(subtitle);
-  let json = parseJson(translation);
-  if (!json) {
-    // 将翻译结果转换为json格式，需要先去掉```json字符串的注释
-    const jsonStr = translation.match(/```json([^`]+)```/);
-    if (jsonStr) {
-      json = parseJson(jsonStr[1]);
-    }
-  }
+  const json = await getTranslation(subtitle);
   return NextResponse.json({ message: 'success', translation: json });
 }
 
@@ -41,14 +33,15 @@ async function getTranslation(subtitle: string) {
   // 判断视频是否已经存在
   const connection = await getConnection();
   const [translations] = await connection.query<RowDataPacket[]>('SELECT id,originalText,translation FROM Translations where originalText=?', [subtitle]);
+  console.log({ translations, subtitle });
   if (translations.length > 0) {
     if (!parseJson(translations[0].translation)) {
       await connection.query('DELETE FROM Translations WHERE id=?', [translations[0].id]);
     } else {
-      return translations[0].translation;
+      return parseJson(translations[0].translation);
     }
   }
-  const translation = await deepseekCreateCompletion({
+  let translation = await deepseekCreateCompletion({
     messages: [
       {
         role: 'user',
@@ -65,6 +58,15 @@ async function getTranslation(subtitle: string) {
       },
     ],
   });
+  let json = parseJson(translation);
+  if (translation && !json) {
+    // 将翻译结果转换为json格式，需要先去掉```json字符串的注释
+    const jsonStr = translation.match(/```json([^`]+)```/);
+    if (jsonStr) {
+      translation = jsonStr[1];
+      json = parseJson(jsonStr[1]);
+    }
+  }
   await connection.query('INSERT INTO Translations (originalText, translation) VALUES (?, ?)', [subtitle, translation]);
-  return translation;
+  return json;
 }
