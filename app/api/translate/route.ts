@@ -6,6 +6,8 @@ import Joi from 'joi';
 import { getConnection } from '@/app/lib/db';
 import { parseJson } from "../../lib/utils";
 import { RowDataPacket } from 'mysql2';
+import { deepseekCreateCompletion } from '@/app/lib/deepseek';
+
 interface Params {
   subtitle: string;
 }
@@ -46,7 +48,7 @@ async function getTranslation(subtitle: string) {
       return translations[0].translation;
     }
   }
-  const translation = await tongyiCreateCompletion({
+  const translation = await deepseekCreateCompletion({
     messages: [
       {
         role: 'user',

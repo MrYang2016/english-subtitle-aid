@@ -101,10 +101,10 @@ export default function Page({ params }: { params: { videoId: string } }) {
   const seekTo = async (seekTime: number, duration?: number) => {
     play();
     if (playerRef.current) {
-      const seconds = Math.floor(seekTime / 1000);
-      playerRef.current.seekTo(seconds, true);
+      playerRef.current.seekTo(seekTime, true);
       if (duration) {
-        await delay(duration + (seconds * 1000 < seekTime ? (seekTime - seconds * 1000) : 0));
+        const delayTime = duration + (seekTime < seekTime ? (seekTime - seekTime) : 0);
+        await delay(delayTime * 1000);
         pause();
       }
     }
