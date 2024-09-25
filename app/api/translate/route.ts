@@ -26,7 +26,15 @@ export async function GET(request: Request) {
   const { subtitle } = value;
   console.log({ subtitle });
   const json = await getTranslation(subtitle);
-  return NextResponse.json({ message: 'success', translation: json });
+
+  const origin = request.headers.get('Origin');
+  if (origin !== 'https://www.youtube.com') {
+    return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
+  }
+
+  const response = NextResponse.json({ message: 'success', translation: json });
+  response.headers.set('Access-Control-Allow-Origin', 'https://www.youtube.com'); // Allow only YouTube
+  return response;
 }
 
 async function getTranslation(subtitle: string) {
