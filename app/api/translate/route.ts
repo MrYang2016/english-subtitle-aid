@@ -1,5 +1,3 @@
-import { tongyiCreateCompletion } from "@/app/lib/tongyi";
-
 import { NextResponse } from 'next/server';
 import queryString from 'query-string';
 import Joi from 'joi';
