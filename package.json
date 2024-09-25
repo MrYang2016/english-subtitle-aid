@@ -7,7 +7,7 @@
     "start": "next start",
     "dev": "cross-env CUSTOM_ENV=local next dev",
     "lint": "next lint",
-    "pm2-dev": "pm2 delete english-subtitle-aid &&git pull && npm run build && cross-env CUSTOM_ENV=production pm2 start npm --name \"english-subtitle-aid\" -- start"
+    "pm2-dev": "git pull && npm run build && pm2 delete english-subtitle-aid && cross-env CUSTOM_ENV=production pm2 start npm --name \"english-subtitle-aid\" -- start"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
