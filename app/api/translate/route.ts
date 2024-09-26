@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import queryString from 'query-string';
 import Joi from 'joi';
 import { getConnection } from '@/app/lib/db';
-import { parseJson } from "../../lib/utils";
+import { parseJson, delay } from "../../lib/utils";
 import { RowDataPacket } from 'mysql2';
 import { deepseekCreateCompletion } from '@/app/lib/deepseek';
 
@@ -37,6 +37,8 @@ export async function GET(request: Request) {
   return response;
 }
 
+const translateMap = new Map<string, boolean>();
+
 async function getTranslation(subtitle: string) {
   // 判断视频是否已经存在
   const connection = await getConnection();
@@ -49,6 +51,11 @@ async function getTranslation(subtitle: string) {
       return parseJson(translations[0].translation);
     }
   }
+  if (translateMap.has(subtitle)) {
+    await delay(1000);
+    return getTranslation(subtitle);
+  }
+  translateMap.set(subtitle, true);
   let translation = await deepseekCreateCompletion({
     messages: [
       {
@@ -76,5 +83,6 @@ async function getTranslation(subtitle: string) {
     }
   }
   await connection.query('INSERT INTO Translations (originalText, translation) VALUES (?, ?)', [subtitle, translation]);
+  translateMap.delete(subtitle);
   return json;
 }
