@@ -22,18 +22,18 @@ export async function GET(request: Request) {
     return NextResponse.json({ message: 'Invalid input', error: error.message }, { status: 400 });
   }
   
-  // const origin = request.headers.get('Origin');
-  // if (origin !== 'https://www.youtube.com') {
-  //   return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
-  // }
+  const origin = request.headers.get('Origin');
+  if (origin !== 'https://www.youtube.com') {
+    return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
+  }
 
   const { subtitle } = value;
   console.log({ subtitle });
   const json = await getTranslation(subtitle);
 
   const response = NextResponse.json({ message: 'success', translation: json });
-  // response.headers.set('Access-Control-Allow-Origin', 'https://www.youtube.com'); // Allow only YouTube
-  response.headers.set('Access-Control-Allow-Origin', '*');
+  response.headers.set('Access-Control-Allow-Origin', 'https://www.youtube.com'); // Allow only YouTube
+  // response.headers.set('Access-Control-Allow-Origin', '*');
   return response;
 }
 
